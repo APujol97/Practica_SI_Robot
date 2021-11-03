@@ -11,4 +11,29 @@ package practica_robot;
  */
 public class Robot {
     
+    private int x;
+    private int y;
+    
+    private int velocidad = 500; // espera en milisegundos
+    
+    public Robot(int y, int x){
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getX() {
+        return x;
+    }
+    
+    public void setVelocidad(int v) {
+        this.velocidad = v;
+    }
+    
+    public int getVelocidad() {
+        return velocidad;
+    }
 }

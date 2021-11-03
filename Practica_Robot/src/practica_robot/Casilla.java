@@ -16,13 +16,15 @@ import java.awt.geom.Rectangle2D;
  */
 public class Casilla {
     
-    private boolean painted;
+    private boolean muro;
+    private boolean robot;
     private Color color; // cambiar color por imagen
     private final Rectangle2D.Float rectang;
     
     
     public Casilla(Rectangle2D.Float rectang){
-        painted = false;
+        muro = false;
+        robot = false;
         this.rectang = rectang;
         this.color = Color.WHITE;
     }
@@ -30,12 +32,25 @@ public class Casilla {
     public void ColorearCasilla(boolean borrar) { //método para colorear la casilla
         if (borrar) {
             color = Color.WHITE; //si borrar es "true", se pinta de blanco
+            muro = false;
         } else {
             if (color == Color.WHITE) { //si el color de la casilla es blanco, se pinta de negro
                 color = Color.BLACK;
+                muro = true;
             } else {
                 color = Color.WHITE; // si el color de la casilla es negro, se pinta de blanco
+                muro = false;
             }
+        }
+    }
+    
+    public void pintaRobot(){
+        if (color == Color.WHITE) { //si el color de la casilla es blanco, se pinta de azul
+            color = Color.BLUE;
+            robot = true;
+        } else {
+            color = Color.WHITE;
+            robot = false;
         }
     }
     
@@ -45,6 +60,14 @@ public class Casilla {
         g2d.fill(rectang); //pintamos la casilla del color que tiene actualmente
         g2d.setColor(Color.BLACK); //asignamos el color negro
         g2d.draw(rectang); //dibujamos los contornos de la casilla de negro
+    }
+    
+    public boolean hayMuro() {
+        return muro;
+    }
+    
+    public boolean hayRobot() {
+        return robot;
     }
     
 }

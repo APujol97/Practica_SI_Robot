@@ -6,6 +6,7 @@
 package practica_robot;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -25,13 +26,9 @@ public class Main extends JFrame implements MouseListener {
      * @param args the command line arguments
      */
     
-    Tablero tablero; //instancia de la clase tablero
-    JMenu menu;
-    JMenuBar barra;
-    JMenuItem inicia;
-    JMenuItem para;
+    static Tablero tablero; //instancia de la clase tablero
     
-    int n = 20;
+    static int n = 20;
     
     public Main() { //constructor de la clase TallerPictograma
         this.setTitle("Robot");
@@ -43,37 +40,13 @@ public class Main extends JFrame implements MouseListener {
         //se inicializa el tablero
         tablero = new Tablero(n);
         tablero.addMouseListener(this);
-        
-        barra = new JMenuBar();
-        menu = new JMenu();
-        inicia = new JMenuItem();
-        para = new JMenuItem();
-        
-        barra.add(menu);
-        menu.setText("MENÚ");
-        menu.add(inicia);
-        menu.add(para);
-        
-        inicia.setText("INICIA");
-        inicia.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ev) {
-                repaint();
-            }
-        });
-        para.setText("PARA");
-        para.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ev) {
-                repaint();
-            }
-        });
+        tablero.setLocation(50, 50);
         
         //se especifican las caracterísitcas de la ventana
+        this.getContentPane().add(new Controlador(), BorderLayout.NORTH);
         this.getContentPane().add(tablero, BorderLayout.CENTER);
-        this.setJMenuBar(barra);
         this.setResizable(false);
-        this.setSize(tablero.getPreferredSize());
+        this.setSize(new Dimension(650, 650));
         this.pack();
         this.setLocationRelativeTo(null);
 
@@ -82,6 +55,18 @@ public class Main extends JFrame implements MouseListener {
     public static void main(String[] args) {
         // TODO code application logic here
         new Main().setVisible(true);
+    }
+    
+    public static void reset() {
+        tablero.resetTablero();
+    }
+    
+    public static void muro(){
+        tablero.setMuro(true);
+    }
+    
+    public static void robot(){
+        tablero.setMuro(false);
     }
     
     @Override

@@ -16,14 +16,19 @@ import javax.swing.JPanel;
  */
 public class Tablero extends JPanel{
     
-    
+    private Robot robot;
     private static int elementos; //número de casillas
     private static final int dimension = 600; //dimensión de un lado del tablero
-    private final Casilla tablero[][];
+    private Casilla tablero[][];
     private static int lado;
     private boolean borrar;
+    private boolean muro = true;
     
     public Tablero(int n){
+        initComponents(n);
+    }
+    
+    public void initComponents(int n){
         tablero = new Casilla[n][n];
         elementos = n;
         lado = dimension/elementos;
@@ -40,13 +45,38 @@ public class Tablero extends JPanel{
             }
             eje_y += lado;
         }
-        
     }
     
     public void Colorear(int x, int y) { //método para colorear una casilla
         x = x / lado; //calculamos la columna de la casilla clickeada
         y = y / lado; //calculamos la fila de la casilla clickeada
-        tablero[y][x].ColorearCasilla(borrar);
+        if(muro){
+            tablero[y][x].ColorearCasilla(borrar);
+        }else{
+            ponerRobot(x,y);
+        }
+    }
+    
+    public void ponerRobot(int x, int y) {
+        if(!tablero[y][x].hayMuro()){
+            if(!tablero[y][x].hayRobot()){
+                if(robot != null){
+                    tablero[robot.getY()][robot.getX()].pintaRobot();
+                }
+                robot = new Robot(y, x);
+                tablero[y][x].pintaRobot();
+            }else{
+                robot = null;
+                tablero[y][x].pintaRobot();
+            }
+            
+        }
+    }
+    
+    public void resetTablero(){
+        initComponents(elementos);
+        robot = null;
+        repaint();
     }
     
     @Override
@@ -61,6 +91,10 @@ public class Tablero extends JPanel{
                 tablero[i][j].paintComponent(g);
             }
         }
+    }
+
+    void setMuro(boolean b) {
+        this.muro = b;
     }
     
 }
