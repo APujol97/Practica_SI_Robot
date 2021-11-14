@@ -27,6 +27,7 @@ public class Robot extends Thread{
     public Robot(int y, int x){
         this.x = x;
         this.y = y;
+        this.start();
     }
 
     public int getY() {
@@ -39,22 +40,25 @@ public class Robot extends Thread{
     
     @Override
     public void run(){
-        
-        moverse = true;
-        
-        while(moverse){
-            percibe();
-            avanzar();
-            try {
-            Thread.sleep(velocidad);
-        } catch (InterruptedException ex) {
-            System.out.println(ex.getMessage());
-        }
+        while(true){
+            while(moverse){
+                percibe();
+                avanzar();
+                try {
+                    Thread.sleep(velocidad);
+                } catch (InterruptedException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
         }
     }
     
     public void setMovimiento(boolean moverse){
         this.moverse = moverse;
+    }
+    
+    public boolean getMovimiento() {
+        return this.moverse;
     }
     
     public void setVelocidad(int v) {

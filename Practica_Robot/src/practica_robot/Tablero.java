@@ -136,12 +136,11 @@ public class Tablero extends JPanel{
                 }
             }
         }
-        System.out.println("paso");
         robot.percibir(percepciones);
     }
     
     public void iniciarRobot(){
-        robot.start();
+        robot.setMovimiento(!robot.getMovimiento());
     }
     
     public void moverRobot(int y, int x, Direccion dir){
