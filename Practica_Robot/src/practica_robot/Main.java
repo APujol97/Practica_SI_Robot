@@ -30,6 +30,7 @@ public class Main extends JFrame implements MouseListener {
     
     static int n = 20;
     
+    
     public Main() { //constructor de la clase TallerPictograma
         this.setTitle("Robot");
         initComponents();
@@ -55,6 +56,20 @@ public class Main extends JFrame implements MouseListener {
     public static void main(String[] args) {
         // TODO code application logic here
         new Main().setVisible(true);
+    }
+    
+    public static void iniciar(){
+        
+        tablero.iniciarRobot();
+    }
+    
+    public static void percepciones(){
+        tablero.informar();
+        tablero.repaint();
+    }
+    
+    public static void moverRobot(int y, int x, Direccion dir){
+        tablero.moverRobot(y,x,dir);
     }
     
     public static void reset() {

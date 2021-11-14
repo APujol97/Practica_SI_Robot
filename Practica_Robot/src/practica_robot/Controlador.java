@@ -50,7 +50,7 @@ public class Controlador extends JPanel {
         iniciar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                Main.iniciar();
             }
         });
         reset.addActionListener(new ActionListener(){

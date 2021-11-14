@@ -79,6 +79,93 @@ public class Tablero extends JPanel{
         repaint();
     }
     
+    public void informar(){
+        int[] percepciones = new int[8];
+        
+        //percepcion para bordes
+        if(robot.getX() == 0){
+            percepciones[0] = 1;
+            percepciones[6] = 1;
+            percepciones[7] = 1;
+        } else if(robot.getX() == (elementos-1)){
+            percepciones[2] = 1;
+            percepciones[3] = 1;
+            percepciones[4] = 1;
+        }
+        
+        if(robot.getY() == 0){
+            percepciones[0] = 1;
+            percepciones[1] = 1;
+            percepciones[2] = 1;
+        } else if(robot.getY() == (elementos-1)){
+            percepciones[4] = 1;
+            percepciones[5] = 1;
+            percepciones[6] = 1;
+        }
+        
+        int initX = robot.getX()-1;
+        int initY = robot.getY()-1;
+        int iter = 0;
+        //percepcion muros
+        for(int i = 0; i < 3; i++){
+            if((initX >=0) && (initY+i >= 0) && (initY+i < elementos) && (tablero[initY+i][initX].hayMuro())){
+                if(i == 0){
+                    percepciones[0] = 1;
+                } else if(i == 1){
+                    percepciones[7] = 1;
+                } else {
+                    percepciones[6] = 1;
+                }
+            }
+            
+            if((initY+i >= 0) && (i != 1) && (initY+i < elementos) && (tablero[initY+i][initX+1].hayMuro())){
+                if(i == 0){
+                    percepciones[1] = 1;
+                } else {
+                    percepciones[5] = 1;
+                }
+            }
+            
+            if((initX+2 < elementos) && (initY+i < elementos) && (initY+i >= 0) && (tablero[initY+i][initX+2].hayMuro())){
+                if(i == 0){
+                    percepciones[2] = 1;
+                } else if(i == 1){
+                    percepciones[3] = 1;
+                } else {
+                    percepciones[4] = 1;
+                }
+            }
+        }
+        System.out.println("paso");
+        robot.percibir(percepciones);
+    }
+    
+    public void iniciarRobot(){
+        robot.start();
+    }
+    
+    public void moverRobot(int y, int x, Direccion dir){
+        switch(dir){
+            case NORTE:
+                tablero[y+1][x].pintaRobot();
+                break;
+            case SUR:
+                tablero[y-1][x].pintaRobot();
+                break;
+            case ESTE:
+                tablero[y][x-1].pintaRobot();
+                break;
+            case OESTE:
+                tablero[y][x+1].pintaRobot();
+                break;
+            default:
+                System.out.println("ERROR");
+                break;
+        }
+        
+        tablero[y][x].pintaRobot();
+    }
+    
     @Override
     public Dimension getPreferredSize() { //método que devuelve las dimensiones del tablero
         return new Dimension(dimension, dimension);
