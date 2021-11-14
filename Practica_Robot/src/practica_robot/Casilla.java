@@ -30,16 +30,18 @@ public class Casilla {
     }
     
     public void ColorearCasilla(boolean borrar) { //método para colorear la casilla
-        if (borrar) {
-            color = Color.WHITE; //si borrar es "true", se pinta de blanco
-            muro = false;
-        } else {
-            if (color == Color.WHITE) { //si el color de la casilla es blanco, se pinta de negro
-                color = Color.BLACK;
-                muro = true;
-            } else {
-                color = Color.WHITE; // si el color de la casilla es negro, se pinta de blanco
+        if(!robot){
+            if (borrar) {
+                color = Color.WHITE; //si borrar es "true", se pinta de blanco
                 muro = false;
+            } else {
+                if (color == Color.WHITE) { //si el color de la casilla es blanco, se pinta de negro
+                    color = Color.BLACK;
+                    muro = true;
+                } else {
+                    color = Color.WHITE; // si el color de la casilla es negro, se pinta de blanco
+                    muro = false;
+                }
             }
         }
     }
