@@ -136,6 +136,10 @@ public class Tablero extends JPanel{
                 }
             }
         }
+        for(int i = 0; i < 8; i++){
+            System.out.println(percepciones[i]);
+        }
+        System.out.println("-------");
         robot.percibir(percepciones);
     }
     

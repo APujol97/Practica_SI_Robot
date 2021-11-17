@@ -198,27 +198,6 @@ public class Robot extends Thread{
                             mover(Direccion.SUR);
                         }
                     }
-//                    if(percepciones[1] == 0){
-//                        if(adyacencia_prev == Direccion.ESTE){
-//                            mov_previo = Direccion.ESTE;
-//                            mover(Direccion.ESTE);
-//                        } else if(adyacencia_prev == Direccion.OESTE){
-//                            mov_previo = Direccion.OESTE;
-//                            mover(Direccion.OESTE);
-//                        }
-//                    } else {
-//                        if(adyacencia_prev == Direccion.ESTE){
-//                            if(percepciones[7] != 1){
-//                                mov_previo = Direccion.OESTE;
-//                                mover(Direccion.OESTE);
-//                            }
-//                            mov_previo = Direccion.ESTE;
-//                            mover(Direccion.ESTE);
-//                        } else if(adyacencia_prev == Direccion.OESTE){
-//                            mov_previo = Direccion.OESTE;
-//                            mover(Direccion.OESTE);
-//                        }
-//                    }
                     break;
                 case SUR:
                     if(adyacencia == Direccion.ESTE){
@@ -349,8 +328,8 @@ public class Robot extends Thread{
                                 mov_previo = Direccion.SUR;
                                 mover(Direccion.SUR);
                             } else {
-                                mov_previo = Direccion.ESTE;
-                                mover(Direccion.ESTE);
+                                mov_previo = Direccion.OESTE;
+                                mover(Direccion.OESTE);
                             }
                         } else if(percepciones[5] == 0){
                             adyacencia = Direccion.ESTE;
