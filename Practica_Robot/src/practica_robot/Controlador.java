@@ -8,6 +8,7 @@ package practica_robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -22,6 +23,8 @@ public class Controlador extends JPanel {
     private JButton lento;
     private JButton muro;
     private JButton robot;
+    private JLabel vel;
+    private int velocidad = 0;
     
     public Controlador(){
         iniciar = new JButton("iniciar");
@@ -50,25 +53,35 @@ public class Controlador extends JPanel {
         iniciar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                Main.iniciar();
+                if(Main.iniciar()){
+                    iniciar.setText("pausar");
+                    vel.setText("Velocidad: " + Main.get_velocidad_robot() + "%");
+                } else {
+                    iniciar.setText("iniciar");
+                    vel.setText("Velocidad: " + Main.get_velocidad_robot() + "%");
+                }
             }
         });
         reset.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
+                iniciar.setText("iniciar");
                 Main.reset();
+                vel.setText("Velocidad: 0%");
             }
         });
         rapido.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                Main.acelerar_robot();
+                vel.setText("Velocidad: " + Main.get_velocidad_robot() + "%");
             }
         });
         lento.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                Main.decelerar_robot();
+                vel.setText("Velocidad: " + Main.get_velocidad_robot() + "%");
             }
         });
         muro.addActionListener(new ActionListener(){
@@ -84,11 +97,14 @@ public class Controlador extends JPanel {
             }
         });
         
+        vel = new JLabel("Velocidad: " + Main.get_velocidad_robot() + "%");
+        
         this.add(iniciar);
         this.add(reset);
         this.add(rapido);
         this.add(lento);
         this.add(muro);
         this.add(robot);
+        this.add(vel);
     }
 }

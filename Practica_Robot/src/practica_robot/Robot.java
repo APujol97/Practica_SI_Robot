@@ -5,9 +5,6 @@
  */
 package practica_robot;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author pujol
@@ -17,16 +14,20 @@ public class Robot extends Thread{
     private int x;
     private int y;
     
-    static int velocidad = 500; // espera en milisegundos
+    static float velocidad = 500; // espera en milisegundos
+    static int velocidad_max = 0;
+    static int velocidad_min = 900;
+    static int velocidad_salto = 100;
     private boolean moverse = false;
     
     private int[] percepciones = {0,0,0,0,0,0,0,0};
     private Direccion mov_previo= null;
     private Direccion adyacencia = null;
-    private Direccion adyacencia_prev = null;
     private int[] caracteristicas = new int[4];
+    private boolean vivo;
     
     public Robot(int y, int x){
+        this.vivo = true;
         this.x = x;
         this.y = y;
         this.start();
@@ -42,18 +43,34 @@ public class Robot extends Thread{
     
     @Override
     public void run(){
-        while(true){
+        while(vivo){
             System.out.println("espero");
             while(moverse){
                 percibe();
                 avanzar();
                 try {
-                    Thread.sleep(velocidad);
+                    Thread.sleep((long) velocidad);
                 } catch (InterruptedException ex) {
-                    System.out.println(ex.getMessage());
+                    //System.out.println(ex.getMessage());
                 }
             }
         }
+    }
+    
+    public void acelerar(){
+        if(velocidad > velocidad_max){
+            velocidad -= velocidad_salto;
+        }
+    }
+    
+    public void decelerar(){
+        if(velocidad < velocidad_min){
+            velocidad += velocidad_salto;
+        }
+    }
+    
+    public void muere(){
+        this.vivo = false;
     }
     
     public void setMovimiento(boolean moverse){
@@ -64,12 +81,12 @@ public class Robot extends Thread{
         return this.moverse;
     }
     
-    public void setVelocidad(int v) {
-        this.velocidad = v;
-    }
-    
-    public int getVelocidad() {
-        return velocidad;
+    public float getVelocidad() {
+        float vel = 0;
+        if(moverse){
+            vel = 100 - ((velocidad/1000) * 100);
+        }
+        return vel;
     }
     
     public void percibir(int[] percepciones){
@@ -124,9 +141,25 @@ public class Robot extends Thread{
         this.caracteristicas = carac;
     }
     
+    private boolean tiene_pared(){
+        
+        boolean pared = false;
+        
+        for(int i = 0; i < caracteristicas.length; i++){
+            if(caracteristicas[i] == 1){
+                pared = true;
+            }
+        }
+        return pared;
+    }
+    
     public void avanzar(){
         this.evaluar();
-        //adyacencia_prev = adyacencia;
+        
+        if(!tiene_pared()){
+            adyacencia = null;
+        }
+        
         if(adyacencia == null){
             if(caracteristicas[0] == 1 && caracteristicas[1] == 0){
                 adyacencia = Direccion.NORTE;
@@ -169,7 +202,7 @@ public class Robot extends Thread{
                             adyacencia = Direccion.NORTE;
                             mov_previo = Direccion.OESTE;
                             mover(Direccion.OESTE);
-                        } else {
+                        } else if(percepciones[5] == 0){
                             adyacencia = Direccion.OESTE;
                             mov_previo = Direccion.SUR;
                             mover(Direccion.SUR);
@@ -192,7 +225,7 @@ public class Robot extends Thread{
                             adyacencia = Direccion.NORTE;
                             mov_previo = Direccion.ESTE;
                             mover(Direccion.ESTE);
-                        } else {
+                        } else if(percepciones[5] == 0){
                             adyacencia = Direccion.ESTE;
                             mov_previo = Direccion.SUR;
                             mover(Direccion.SUR);
@@ -218,7 +251,7 @@ public class Robot extends Thread{
                             adyacencia = Direccion.SUR;
                             mov_previo = Direccion.OESTE;
                             mover(Direccion.OESTE);
-                        } else {
+                        } else if(percepciones[1] == 0){
                             adyacencia = Direccion.OESTE;
                             mov_previo = Direccion.NORTE;
                             mover(Direccion.NORTE);
@@ -241,7 +274,7 @@ public class Robot extends Thread{
                             adyacencia = Direccion.SUR;
                             mov_previo = Direccion.ESTE;
                             mover(Direccion.ESTE);
-                        } else {
+                        } else if(percepciones[1] == 0){
                             adyacencia = Direccion.ESTE;
                             mov_previo = Direccion.NORTE;
                             mover(Direccion.NORTE);
@@ -267,7 +300,7 @@ public class Robot extends Thread{
                             adyacencia = Direccion.ESTE;
                             mov_previo = Direccion.SUR;
                             mover(Direccion.SUR);
-                        } else {
+                        } else if(percepciones[7] == 0){
                             adyacencia = Direccion.SUR;
                             mov_previo = Direccion.OESTE;
                             mover(Direccion.OESTE);
@@ -290,7 +323,7 @@ public class Robot extends Thread{
                             adyacencia = Direccion.ESTE;
                             mov_previo = Direccion.NORTE;
                             mover(Direccion.NORTE);
-                        } else {
+                        } else if(percepciones[7] == 0){
                             adyacencia = Direccion.NORTE;
                             mov_previo = Direccion.OESTE;
                             mover(Direccion.OESTE);
@@ -316,7 +349,7 @@ public class Robot extends Thread{
                             adyacencia = Direccion.OESTE;
                             mov_previo = Direccion.SUR;
                             mover(Direccion.SUR);
-                        } else {
+                        } else if(percepciones[3] == 0){
                             adyacencia = Direccion.SUR;
                             mov_previo = Direccion.ESTE;
                             mover(Direccion.ESTE);
@@ -339,7 +372,7 @@ public class Robot extends Thread{
                             adyacencia = Direccion.OESTE;
                             mov_previo = Direccion.NORTE;
                             mover(Direccion.NORTE);
-                        } else {
+                        } else if(percepciones[3] == 0){
                             adyacencia = Direccion.NORTE;
                             mov_previo = Direccion.ESTE;
                             mover(Direccion.ESTE);

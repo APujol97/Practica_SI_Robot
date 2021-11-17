@@ -53,17 +53,31 @@ public class Main extends JFrame implements MouseListener {
         new Main().setVisible(true);
     }
     
-    public static void iniciar(){
-        tablero.iniciarRobot();
+    public static boolean iniciar(){
+        return tablero.iniciarRobot();
     }
     
     public static void percepciones(){
-        tablero.informar();
+        if(tablero.hay_robot()){
+            tablero.informar();
+        }
         tablero.repaint();
     }
     
     public static void moverRobot(int y, int x, Direccion dir){
         tablero.moverRobot(y,x,dir);
+    }
+    
+    public static void acelerar_robot(){
+        tablero.acelerar_robot();
+    }
+    
+    public static void decelerar_robot(){
+        tablero.decelerar_robot();
+    }
+    
+    public static float get_velocidad_robot(){
+        return tablero.get_velocidad_robot();
     }
     
     public static void reset() {

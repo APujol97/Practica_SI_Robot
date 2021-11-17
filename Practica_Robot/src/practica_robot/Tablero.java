@@ -53,7 +53,9 @@ public class Tablero extends JPanel{
         if(muro){
             tablero[y][x].ColorearCasilla(borrar);
         }else{
-            ponerRobot(x,y);
+            if(robot == null || !robot.getMovimiento()){
+                ponerRobot(x,y);
+            }
         }
     }
     
@@ -73,9 +75,33 @@ public class Tablero extends JPanel{
         }
     }
     
+    public void acelerar_robot(){
+        if(robot != null){
+            robot.acelerar();
+        }
+    }
+    
+    public void decelerar_robot(){
+        if(robot != null){
+            robot.decelerar();
+        }
+    }
+    
+    public float get_velocidad_robot(){
+        float vel = 0;
+        if(robot != null){
+            vel =  robot.getVelocidad();
+        }
+        return vel;
+    }
+    
     public void resetTablero(){
+        if(robot != null){
+            robot.setMovimiento(false);
+            robot.muere();
+            robot = null;
+        }
         initComponents(elementos);
-        robot = null;
         repaint();
     }
     
@@ -136,15 +162,20 @@ public class Tablero extends JPanel{
                 }
             }
         }
-        for(int i = 0; i < 8; i++){
-            System.out.println(percepciones[i]);
-        }
-        System.out.println("-------");
         robot.percibir(percepciones);
     }
     
-    public void iniciarRobot(){
-        robot.setMovimiento(!robot.getMovimiento());
+    public boolean iniciarRobot(){
+        boolean iniciado = false;
+        if(robot != null){
+            robot.setMovimiento(!robot.getMovimiento());
+            iniciado = robot.getMovimiento();
+        }
+        return iniciado;
+    }
+    
+    public boolean hay_robot(){
+        return robot != null;
     }
     
     public void moverRobot(int y, int x, Direccion dir){
